@@ -29,21 +29,31 @@ def create():
 
 @app.route("/users/<int:user_id>", methods=["DELETE"])
 def destory(user_id):
+    valid_id = False
     for i in range(len(users)):
         if users[i]["id"] == user_id:
+            valid_id = True
             del users[i]
             break
-    return make_response("", 204)
+    if valid_id:
+        return make_response("", 204)
+    else:
+        return make_response("Invalid ID", 404)
 
 
 @app.route("/users/<int:user_id>", methods=["PUT"])
 def update(user_id):
+    valid_id = False
     for i in range(len(users)):
         if users[i]["id"] == user_id:
+            valid_id = True
             users[i]["name"] = request.json.get("name")
             users[i]["email"] = request.json.get("email")
             users[i]["password"] = request.json.get("password")
-    return make_response("", 204)
+    if valid_id:
+        return make_response("", 204)
+    else:
+        return make_response("Invalid ID", 404)
 
 
 users = [
